@@ -1,6 +1,6 @@
-const BUG_TIME_MINIMUM = 1;
-const BUG_TIME_MAXIMUM = 2;
-const TIME_STEP_MAX = 1;
+const BUG_TIME_MINIMUM = 2;
+const BUG_TIME_MAXIMUM = 4;
+const TIME_STEP_MAX = 0.2;
 const LENGTH_MIN = 2;
 const LENGTH_MAX = 12;
 
@@ -15,34 +15,17 @@ const resize = () => {
     canvas.height = wrapper.offsetHeight;
 };
 
-const makeSpawnLocation = () => {
-    let x, y;
-
-    if (Math.random() < 0.5) {
-        if (Math.random() < 0.5) {
-            x = -Bug.SPAWN_RADIUS;
-        }
-        else {
-            x = canvas.width + Bug.SPAWN_RADIUS;
-        }
-
-        y = Math.random() * canvas.height;
-    }
-    else {
-        if (Math.random() < 0.5) {
-            y = -Bug.SPAWN_RADIUS;
-        }
-        else {
-            y = canvas.height + Bug.SPAWN_RADIUS;
-        }
-
-        x = Math.random() * canvas.width;
-    }
-
-    return {
-        x: x,
-        y: y
-    };
+const makeSpawnLocation = right => {
+    if (right)
+        return {
+            x: canvas.width + Bug.SPAWN_RADIUS,
+            y: canvas.height * Math.random()
+        };
+    else
+        return {
+            x: -Bug.SPAWN_RADIUS,
+            y: canvas.height * Math.random()
+        };
 };
 
 const makeInitialLocation = () => {
@@ -54,14 +37,15 @@ const makeInitialLocation = () => {
 
 const spawn = center => {
     let lastBug;
-    const location = center ? makeInitialLocation() : makeSpawnLocation();
+    const right = Math.random() < 0.5;
+    const location = center ? makeInitialLocation() : makeSpawnLocation(right);
     const lengthRandomizer = Math.random();
     const length = LENGTH_MIN + Math.floor(lengthRandomizer * lengthRandomizer * (LENGTH_MAX - LENGTH_MIN + 1)) - 1;
     const body = new BodyShape();
-    const newBug = lastBug = new Bug(location.x, location.y, body, null);
+    const newBug = lastBug = new Bug(location.x, location.y, body, right, null);
 
     for (let i = 0; i < length; ++i) {
-        const newSegment = new Bug(0, 0, body, lastBug, body.getLength() * Bug.SEGMENT_OVERLAP);
+        const newSegment = new Bug(0, 0, body, right, lastBug, body.getLength() * Bug.SEGMENT_OVERLAP);
 
         lastBug.setChild(newSegment);
 

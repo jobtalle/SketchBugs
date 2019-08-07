@@ -1,4 +1,4 @@
-const Bug = function(x, y, body, parent, followDistance) {
+const Bug = function(x, y, body, right, parent, followDistance) {
     const legs = [];
     const noise = cubicNoiseConfig(Math.random());
     let child = null;
@@ -19,7 +19,10 @@ const Bug = function(x, y, body, parent, followDistance) {
         direction = cubicNoiseSample2(
             noise,
             x * Bug.NOISE_SCALE,
-            y * Bug.NOISE_SCALE) * Bug.NOISE_ANGLE_MAX;
+            y * Bug.NOISE_SCALE) * Math.PI * 2;
+
+        if (!right)
+            direction += Math.PI;
     };
 
     const makeBody = () => {
@@ -143,7 +146,6 @@ const Bug = function(x, y, body, parent, followDistance) {
 Bug.VISIBILITY_RADIUS = 500;
 Bug.SPAWN_RADIUS = 400;
 Bug.NOISE_SCALE = 0.0065;
-Bug.NOISE_ANGLE_MAX = Math.PI * 6;
 Bug.SPEED_SCALE = 0.1;
 Bug.SEGMENT_OVERLAP = 0.4;
 Bug.LEG_SCALE = 1.5;
