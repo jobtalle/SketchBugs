@@ -139,8 +139,8 @@ const Bug = function(x, y, body, parent, followDistance) {
     makeBody();
 };
 
-Bug.VISIBILITY_RADIUS = 400;
-Bug.SPAWN_RADIUS = 200;
+Bug.VISIBILITY_RADIUS = 500;
+Bug.SPAWN_RADIUS = 400;
 Bug.NOISE_SCALE = 0.0065;
 Bug.NOISE_ANGLE_MAX = Math.PI * 6;
 Bug.SPEED_SCALE = 0.1;
