@@ -1,2 +1,3 @@
 # SketchBugs
-Bugs on a canvas
+Bugs on a canvas.
+![alt text](preview.png "Bugs")
