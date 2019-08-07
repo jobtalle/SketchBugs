@@ -6,8 +6,8 @@ const Bug = function(x, y) {
 
     const makeBody = () => {
         legs.push(
-            new Leg(x, y, direction, 0.4, 64, 128),
-            new Leg(x, y, direction, -0.4, 64, 128)
+            new Leg(x, y, direction, 0.6, 64, 0, speed * 4),
+            new Leg(x, y, direction, -0.6, 64, 1, speed * 4)
         );
     };
 

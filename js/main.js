@@ -1,5 +1,6 @@
 const BUG_TIME_MINIMUM = 1;
 const BUG_TIME_MAXIMUM = 2;
+const TIME_STEP_MAX = 1;
 
 const wrapper = document.getElementById("wrapper");
 const canvas = document.getElementById("renderer");
@@ -17,6 +18,9 @@ const spawn = () => {
 };
 
 const update = timeStep => {
+    if (timeStep > TIME_STEP_MAX)
+        timeStep = TIME_STEP_MAX;
+
     const context = canvas.getContext("2d");
 
     context.clearRect(0, 0, canvas.width, canvas.height);
