@@ -2,11 +2,12 @@ const BUG_TIME_MINIMUM = 2;
 const BUG_TIME_MAXIMUM = 4;
 const TIME_STEP_MAX = 0.2;
 const LENGTH_MIN = 2;
-const LENGTH_MAX = 12;
+const LENGTH_MAX = 10;
 
 const wrapper = document.getElementById("wrapper");
 const canvas = document.getElementById("renderer");
 const bugs = [];
+const factory = new BugFactory();
 let lastDate = new Date();
 let bugTimer = 0;
 
@@ -36,23 +37,10 @@ const makeInitialLocation = () => {
 };
 
 const spawn = center => {
-    let lastBug;
     const right = Math.random() < 0.5;
     const location = center ? makeInitialLocation() : makeSpawnLocation(right);
-    const lengthRandomizer = Math.random();
-    const length = LENGTH_MIN + Math.floor(lengthRandomizer * lengthRandomizer * (LENGTH_MAX - LENGTH_MIN + 1)) - 1;
-    const body = new BodyShape();
-    const newBug = lastBug = new Bug(location.x, location.y, body, right, null);
 
-    for (let i = 0; i < length; ++i) {
-        const newSegment = new Bug(0, 0, body, right, lastBug, body.getLength() * Bug.SEGMENT_OVERLAP);
-
-        lastBug.setChild(newSegment);
-
-        lastBug = newSegment;
-    }
-
-    bugs.push(newBug);
+    bugs.push(factory.makeBug(right, location.x, location.y));
 };
 
 const update = timeStep => {
