@@ -19,7 +19,6 @@ const BodyShape = function() {
     this.draw = context => {
         const right = this.getLength() * 0.5;
 
-
         context.fillStyle = fill;
         context.strokeStyle = "black";
         context.beginPath();

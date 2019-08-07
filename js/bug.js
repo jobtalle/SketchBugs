@@ -5,6 +5,8 @@ const Bug = function(x, y, body, right, parent, followDistance) {
     let lifetime = 0;
     let speed;
     let direction;
+    let blinkDelay = 0;
+    let blink = true;
 
     if (parent) {
         x = parent.getX() + Math.cos(parent.getDirection()) * -followDistance;
@@ -39,24 +41,38 @@ const Bug = function(x, y, body, right, parent, followDistance) {
     const drawEye = (x, y, context) => {
         const eyeAngle = (cubicNoiseSample1(noise, lifetime * Bug.EYE_SCALE) - 0.5) * Bug.EYE_DEVIANCE;
 
+        context.save();
+
+        context.translate(x, y);
         context.fillStyle = "white";
         context.strokeStyle = "black";
 
         context.beginPath();
-        context.arc(x, y, 5, 0, Math.PI * 2);
+        context.arc(0, 0, 5, 0, Math.PI * 2);
         context.fill();
         context.stroke();
 
-        context.fillStyle = "black";
+        context.rotate(eyeAngle);
 
         context.beginPath();
-        context.arc(
-            x + Math.cos(eyeAngle) * 3,
-            y + Math.sin(eyeAngle) * 3,
-            2,
-            0,
-            Math.PI * 2);
-        context.fill();
+        if (blink) {
+            context.strokeStyle = "black";
+            context.moveTo(3, -2);
+            context.lineTo(3, 2);
+            context.stroke();
+        }
+        else {
+            context.fillStyle = "black";
+            context.arc(
+                3,
+                0,
+                2,
+                0,
+                Math.PI * 2);
+            context.fill();
+        }
+
+        context.restore();
     };
 
     const drawEyes = context => {
@@ -123,6 +139,15 @@ const Bug = function(x, y, body, right, parent, followDistance) {
             y += Math.sin(direction) * speed * timeStep;
 
             sampleMotion();
+
+            if ((blinkDelay -= timeStep) < 0) {
+                if (blink)
+                    blinkDelay = Bug.EYE_BLINK_DELAY_MIN + (Bug.EYE_BLINK_DELAY_MAX - Bug.EYE_BLINK_DELAY_MIN) * Math.random();
+                else
+                    blinkDelay = Bug.EYE_BLINK_DURATION;
+
+                blink = !blink;
+            }
         }
 
         if (child)
@@ -153,3 +178,6 @@ Bug.LEG_LENGTH_MIN = 18;
 Bug.SPEED_MAX = 160;
 Bug.EYE_SCALE = 1.5;
 Bug.EYE_DEVIANCE = Math.PI;
+Bug.EYE_BLINK_DELAY_MIN = 1;
+Bug.EYE_BLINK_DELAY_MAX = 4;
+Bug.EYE_BLINK_DURATION = 0.1;
