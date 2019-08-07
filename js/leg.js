@@ -80,4 +80,4 @@ const Leg = function(x, y, bugDirection, direction, length, initialProgress) {
     applyInitialProgress();
 };
 
-Leg.GROUND_THRESHOLD = 0.95;
+Leg.GROUND_THRESHOLD = 0.9;

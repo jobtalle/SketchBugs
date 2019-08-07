@@ -56,8 +56,8 @@ BodyShape.THICKNESS_MULTIPLIER_MIN = 0.2;
 BodyShape.LENGTH_MIN = 16;
 BodyShape.LENGTH_MAX = 80;
 BodyShape.LENGTH_SEGMENT = 6;
-BodyShape.LEG_ANGLE_MIN = 0.2;
-BodyShape.LEG_ANGLE_MAX = 1;
+BodyShape.LEG_ANGLE_MIN = 0.3;
+BodyShape.LEG_ANGLE_MAX = 0.9;
 BodyShape.COLORS = [
     "rgba(107,142,35,0.7)",
     "rgba(178,34,34,0.7)",
