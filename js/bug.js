@@ -37,9 +37,8 @@ const Bug = function(x, y, body, right, parent, followDistance) {
     };
 
     const makeBody = () => {
-        const legLength = Math.max(Bug.LEG_LENGTH_MIN, body.getThickness() * Bug.LEG_SCALE);
-        const l = new Leg(x, y, direction, -body.getLegAngle(), legLength, Math.random(), speed * 4);
-        const r = new Leg(x, y, direction, body.getLegAngle(), legLength, Math.random(), speed * 4);
+        const l = new Leg(x, y, direction, -body.getLegAngle(), body.getLegLength(), Math.random(), speed * 4);
+        const r = new Leg(x, y, direction, body.getLegAngle(), body.getLegLength(), Math.random(), speed * 4);
 
         l.setCounterpart(r);
         r.setCounterpart(l);
@@ -192,8 +191,6 @@ Bug.NOISE_SCALE_MAX = 0.01;
 Bug.SPEED_SCALE_MIN = 0.1;
 Bug.SPEED_SCALE_MAX = 0.6;
 Bug.SEGMENT_OVERLAP = 0.4;
-Bug.LEG_SCALE = 1.5;
-Bug.LEG_LENGTH_MIN = 18;
 Bug.SPEED_MAX_MIN = 100;
 Bug.SPEED_MAX_MAX = 180;
 Bug.EYE_SCALE_MIN = 0.8;
