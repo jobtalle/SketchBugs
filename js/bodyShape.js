@@ -41,7 +41,7 @@ const BodyShape = function() {
     };
 
     while (this.getLength() < length) {
-        const newThickness = BodyShape.WIDTH_MIN + (BodyShape.WIDTH_MAX - BodyShape.WIDTH_MIN) * Math.random() * thicknessMultiplier;
+        const newThickness = (BodyShape.WIDTH_MIN + (BodyShape.WIDTH_MAX - BodyShape.WIDTH_MIN) * Math.random()) * thicknessMultiplier;
 
         if (thickness < newThickness)
             thickness = newThickness;
@@ -52,7 +52,7 @@ const BodyShape = function() {
 
 BodyShape.WIDTH_MIN = 12;
 BodyShape.WIDTH_MAX = 32;
-BodyShape.THICKNESS_MULTIPLIER_MIN = 0.1;
+BodyShape.THICKNESS_MULTIPLIER_MIN = 0.2;
 BodyShape.LENGTH_MIN = 16;
 BodyShape.LENGTH_MAX = 80;
 BodyShape.LENGTH_SEGMENT = 6;
