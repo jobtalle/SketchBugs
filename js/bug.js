@@ -19,8 +19,8 @@ const Bug = function(x, y, parent, followDistance) {
     };
 
     const makeBody = () => {
-        const l = new Leg(x, y, direction, -0.6, 64, 0, speed * 4);
-        const r = new Leg(x, y, direction, 0.6, 64, 1, speed * 4);
+        const l = new Leg(x, y, direction, -0.9, 32, 0, speed * 4);
+        const r = new Leg(x, y, direction, 0.9, 32, 1, speed * 4);
 
         l.setCounterpart(r);
         r.setCounterpart(l);
@@ -106,6 +106,7 @@ const Bug = function(x, y, parent, followDistance) {
     makeBody();
 };
 
-Bug.VISIBILITY_RADIUS = 200;
-Bug.NOISE_SCALE = 0.008;
+Bug.VISIBILITY_RADIUS = 400;
+Bug.SPAWN_RADIUS = 200;
+Bug.NOISE_SCALE = 0.0065;
 Bug.NOISE_ANGLE_MAX = Math.PI * 4;
