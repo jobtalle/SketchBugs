@@ -3,10 +3,12 @@ const Bug = function(x, y, body, right, parent, followDistance) {
     const noise = cubicNoiseConfig(Math.random());
     const eyeRadius = Math.max(body.getThickness() * 0.5 * Math.random() * Bug.EYE_RADIUS_FACTOR_MAX, Bug.EYE_RADIUS_MIN);
     const eyeSpacing = (body.getThickness() * 0.5 - eyeRadius) * Math.random();
+    const eyeScale = Bug.EYE_SCALE_MIN + (Bug.EYE_SCALE_MAX - Bug.EYE_SCALE_MIN) * Math.random();
     const pupilRadius = eyeRadius * Bug.EYE_PUPIL_RATIO;
     const speedScale = Bug.SPEED_SCALE_MIN + (Bug.SPEED_SCALE_MAX - Bug.SPEED_SCALE_MIN) * Math.random();
     const noiseScale = Bug.NOISE_SCALE_MIN + (Bug.NOISE_SCALE_MAX - Bug.NOISE_SCALE_MIN) * Math.random();
     const speedMax = Bug.SPEED_MAX_MIN + (Bug.SPEED_MAX_MAX - Bug.SPEED_MAX_MIN) * Math.random();
+    const eyeDeviance = Bug.EYE_DEVIANCE_MIN + (Bug.EYE_DEVIANCE_MAX - Bug.EYE_DEVIANCE_MIN) * Math.random();
     let child = null;
     let wings = null;
     let lifetime = 0;
@@ -46,7 +48,7 @@ const Bug = function(x, y, body, right, parent, followDistance) {
     };
 
     const drawEye = (x, y, eyeRadius, pupilRadius, context) => {
-        const eyeAngle = (cubicNoiseSample1(noise, lifetime * Bug.EYE_SCALE) - 0.5) * Bug.EYE_DEVIANCE;
+        const eyeAngle = (cubicNoiseSample1(noise, lifetime * eyeScale) - 0.5) * eyeDeviance;
 
         context.save();
 
@@ -194,8 +196,10 @@ Bug.LEG_SCALE = 1.5;
 Bug.LEG_LENGTH_MIN = 18;
 Bug.SPEED_MAX_MIN = 100;
 Bug.SPEED_MAX_MAX = 180;
-Bug.EYE_SCALE = 1.5;
-Bug.EYE_DEVIANCE = Math.PI;
+Bug.EYE_SCALE_MIN = 0.8;
+Bug.EYE_SCALE_MAX = 2.2;
+Bug.EYE_DEVIANCE_MIN = Math.PI * 0.8;
+Bug.EYE_DEVIANCE_MAX = Math.PI * 1.5;
 Bug.EYE_BLINK_DELAY_MIN = 1;
 Bug.EYE_BLINK_DELAY_MAX = 4;
 Bug.EYE_BLINK_DURATION = 0.1;
