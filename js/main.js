@@ -1,8 +1,8 @@
 const BUG_TIME_MINIMUM = 1;
 const BUG_TIME_MAXIMUM = 2;
 const TIME_STEP_MAX = 1;
-const LENGTH_MIN = 1;
-const LENGTH_MAX = 8;
+const LENGTH_MIN = 2;
+const LENGTH_MAX = 12;
 
 const wrapper = document.getElementById("wrapper");
 const canvas = document.getElementById("renderer");
@@ -55,11 +55,13 @@ const makeInitialLocation = () => {
 const spawn = center => {
     let lastBug;
     const location = center ? makeInitialLocation() : makeSpawnLocation();
-    const length = LENGTH_MIN + Math.floor(Math.random() * (LENGTH_MAX - LENGTH_MIN));
-    const newBug = lastBug = new Bug(location.x, location.y, null);
+    const lengthRandomizer = Math.random();
+    const length = LENGTH_MIN + Math.floor(lengthRandomizer * lengthRandomizer * (LENGTH_MAX - LENGTH_MIN + 1)) - 1;
+    const body = new BodyShape();
+    const newBug = lastBug = new Bug(location.x, location.y, body, null);
 
     for (let i = 0; i < length; ++i) {
-        const newSegment = new Bug(0, 0, lastBug, 24);
+        const newSegment = new Bug(0, 0, body, lastBug, body.getLength() * Bug.SEGMENT_OVERLAP);
 
         lastBug.setChild(newSegment);
 

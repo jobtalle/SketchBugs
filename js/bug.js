@@ -1,4 +1,4 @@
-const Bug = function(x, y, parent, followDistance) {
+const Bug = function(x, y, body, parent, followDistance) {
     const legs = [];
     const noise = cubicNoiseConfig(Math.random());
     let child = null;
@@ -15,7 +15,7 @@ const Bug = function(x, y, parent, followDistance) {
     const sampleMotion = () => {
         speed = cubicNoiseSample1(
             noise,
-            lifetime * Bug.SPEED_SCALE) * 120;
+            lifetime * Bug.SPEED_SCALE) * Bug.SPEED_MAX;
         direction = cubicNoiseSample2(
             noise,
             x * Bug.NOISE_SCALE,
@@ -23,8 +23,8 @@ const Bug = function(x, y, parent, followDistance) {
     };
 
     const makeBody = () => {
-        const l = new Leg(x, y, direction, -0.8, 32, 0, speed * 4);
-        const r = new Leg(x, y, direction, 0.8, 32, 1, speed * 4);
+        const l = new Leg(x, y, direction, -body.getLegAngle(), body.getThickness() * Bug.LEG_SCALE, 0, speed * 4);
+        const r = new Leg(x, y, direction, body.getLegAngle(), body.getThickness() * Bug.LEG_SCALE, 1, speed * 4);
 
         l.setCounterpart(r);
         r.setCounterpart(l);
@@ -32,16 +32,36 @@ const Bug = function(x, y, parent, followDistance) {
         legs.push(l, r);
     };
 
-    const drawBody = context => {
-        context.fillStyle = "gray";
+    const drawEye = (x, y, context) => {
+        const eyeAngle = (cubicNoiseSample1(noise, lifetime * Bug.EYE_SCALE) - 0.5) * Bug.EYE_DEVIANCE;
+
+        context.fillStyle = "white";
         context.strokeStyle = "black";
+
         context.beginPath();
-        context.moveTo(20, 0);
-        context.lineTo(-20, -12);
-        context.lineTo(-20, 12);
-        context.closePath();
+        context.arc(x, y, 5, 0, Math.PI * 2);
         context.fill();
         context.stroke();
+
+        context.fillStyle = "black";
+
+        context.beginPath();
+        context.arc(
+            x + Math.cos(eyeAngle) * 3,
+            y + Math.sin(eyeAngle) * 3,
+            2,
+            0,
+            Math.PI * 2);
+        context.fill();
+    };
+
+    const drawEyes = context => {
+        drawEye(12, -6, context);
+        drawEye(12, 6, context);
+    };
+
+    const drawBody = context => {
+        body.draw(context);
     };
 
     this.getX = () => x;
@@ -73,6 +93,9 @@ const Bug = function(x, y, parent, followDistance) {
         context.rotate(direction);
 
         drawBody(context);
+
+        if (!parent)
+            drawEyes(context);
 
         context.restore();
     };
@@ -121,3 +144,8 @@ Bug.SPAWN_RADIUS = 200;
 Bug.NOISE_SCALE = 0.0065;
 Bug.NOISE_ANGLE_MAX = Math.PI * 6;
 Bug.SPEED_SCALE = 0.1;
+Bug.SEGMENT_OVERLAP = 0.4;
+Bug.LEG_SCALE = 1.5;
+Bug.SPEED_MAX = 160;
+Bug.EYE_SCALE = 1.5;
+Bug.EYE_DEVIANCE = Math.PI;

@@ -30,11 +30,11 @@ const Leg = function(x, y, bugDirection, direction, length, initialProgress) {
         const elbowX = x + Math.cos(footDirection + elbowAngle) * length * 0.5;
         const elbowY = y + Math.sin(footDirection + elbowAngle) * length * 0.5;
 
-        context.fillStyle = "white";
+        context.fillStyle = "gray";
         context.strokeStyle = "black";
 
         context.beginPath();
-        context.arc(footX, footY, 8, 0, Math.PI * 2);
+        context.arc(footX, footY, 6, 0, Math.PI * 2);
         context.fill();
         context.stroke();
 
