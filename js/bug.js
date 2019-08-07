@@ -2,6 +2,7 @@ const Bug = function(x, y, body, right, parent, followDistance) {
     const legs = [];
     const noise = cubicNoiseConfig(Math.random());
     let child = null;
+    let wings = null;
     let lifetime = 0;
     let speed;
     let direction;
@@ -96,6 +97,10 @@ const Bug = function(x, y, body, right, parent, followDistance) {
         child = bug;
     };
 
+    this.setWings = w => {
+        wings = w;
+    };
+
     this.drawLegs = context => {
         if (child)
             child.drawLegs(context);
@@ -117,10 +122,15 @@ const Bug = function(x, y, body, right, parent, followDistance) {
         if (!parent)
             drawEyes(context);
 
+        if (wings)
+            wings.draw(context, lifetime);
+
         context.restore();
     };
 
     this.update = (timeStep, width, height) => {
+        lifetime += timeStep;
+
         if (parent) {
             const dx = parent.getX() - x;
             const dy = parent.getY() - y;
@@ -133,8 +143,6 @@ const Bug = function(x, y, body, right, parent, followDistance) {
             speed = parent.getSpeed();
         }
         else {
-            lifetime += timeStep;
-
             x += Math.cos(direction) * speed * timeStep;
             y += Math.sin(direction) * speed * timeStep;
 

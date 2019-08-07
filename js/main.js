@@ -1,8 +1,6 @@
-const BUG_TIME_MINIMUM = 2;
+const BUG_TIME_MINIMUM = 1;
 const BUG_TIME_MAXIMUM = 4;
 const TIME_STEP_MAX = 0.2;
-const LENGTH_MIN = 2;
-const LENGTH_MAX = 10;
 
 const wrapper = document.getElementById("wrapper");
 const canvas = document.getElementById("renderer");
