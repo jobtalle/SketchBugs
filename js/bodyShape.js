@@ -52,8 +52,8 @@ const BodyShape = function() {
 
 BodyShape.WIDTH_MIN = 12;
 BodyShape.WIDTH_MAX = 32;
-BodyShape.THICKNESS_MULTIPLIER_MIN = 0.2;
-BodyShape.LENGTH_MIN = 16;
+BodyShape.THICKNESS_MULTIPLIER_MIN = 0.3;
+BodyShape.LENGTH_MIN = 18;
 BodyShape.LENGTH_MAX = 80;
 BodyShape.LENGTH_SEGMENT = 6;
 BodyShape.LEG_ANGLE_MIN = 0.3;

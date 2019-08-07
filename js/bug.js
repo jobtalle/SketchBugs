@@ -27,8 +27,8 @@ const Bug = function(x, y, body, right, parent, followDistance) {
 
     const makeBody = () => {
         const legLength = Math.max(Bug.LEG_LENGTH_MIN, body.getThickness() * Bug.LEG_SCALE);
-        const l = new Leg(x, y, direction, -body.getLegAngle(), legLength, 0, speed * 4);
-        const r = new Leg(x, y, direction, body.getLegAngle(), legLength, 1, speed * 4);
+        const l = new Leg(x, y, direction, -body.getLegAngle(), legLength, Math.random(), speed * 4);
+        const r = new Leg(x, y, direction, body.getLegAngle(), legLength, Math.random(), speed * 4);
 
         l.setCounterpart(r);
         r.setCounterpart(l);
