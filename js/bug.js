@@ -1,7 +1,7 @@
 const Bug = function(x, y, body, right, parent, followDistance) {
     const legs = [];
     const noise = cubicNoiseConfig(Math.random());
-    const eyeRadius = Math.max(body.getThickness() * 0.5 * Math.random(), Bug.EYE_RADIUS_MIN);
+    const eyeRadius = Math.max(body.getThickness() * 0.5 * Math.random() * Bug.EYE_RADIUS_FACTOR_MAX, Bug.EYE_RADIUS_MIN);
     const eyeSpacing = (body.getThickness() * 0.5 - eyeRadius) * Math.random();
     const pupilRadius = eyeRadius * Bug.EYE_PUPIL_RATIO;
     let child = null;
@@ -195,3 +195,4 @@ Bug.EYE_BLINK_DELAY_MAX = 4;
 Bug.EYE_BLINK_DURATION = 0.1;
 Bug.EYE_PUPIL_RATIO = 2 / 5;
 Bug.EYE_RADIUS_MIN = 5;
+Bug.EYE_RADIUS_FACTOR_MAX = 0.8;
