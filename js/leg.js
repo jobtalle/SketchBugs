@@ -1,4 +1,5 @@
 const Leg = function(x, y, bugDirection, direction, length, initialProgress, airSpeed) {
+    let counterpart = null;
     let onGround = true;
     let footX = x + Math.cos(bugDirection + direction) * length;
     let footY = y + Math.sin(bugDirection + direction) * length;
@@ -10,19 +11,32 @@ const Leg = function(x, y, bugDirection, direction, length, initialProgress, air
         footY += Math.sin(bugDirection) * dist;
     };
 
-    const draw = (context, dist) => {
+    this.setCounterpart = leg => counterpart = leg;
+
+    this.stepDown = () => {
+        const dx = footX - x;
+        const dy = footY - y;
+
+        if (Math.sqrt(dx * dx + dy * dy) < length)
+            onGround = true;
+    };
+
+    this.draw = context => {
+        const dx = footX - x;
+        const dy = footY - y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
         const elbowAngle = Math.acos(dist / length) * Math.sign(direction);
         const footDirection = Math.atan2(footY - y, footX - x);
         const elbowX = x + Math.cos(footDirection + elbowAngle) * length * 0.5;
         const elbowY = y + Math.sin(footDirection + elbowAngle) * length * 0.5;
 
-        context.fillStyle = "blue";
+        context.fillStyle = "white";
+        context.strokeStyle = "black";
 
         context.beginPath();
         context.arc(footX, footY, 8, 0, Math.PI * 2);
         context.fill();
-
-        context.strokeStyle = "black";
+        context.stroke();
 
         context.beginPath();
         context.moveTo(x, y);
@@ -31,7 +45,7 @@ const Leg = function(x, y, bugDirection, direction, length, initialProgress, air
         context.stroke();
     };
 
-    this.update = (newX, newY, bugDirection, timeStep, context) => {
+    this.update = (newX, newY, bugDirection, timeStep) => {
         x = newX;
         y = newY;
 
@@ -40,8 +54,12 @@ const Leg = function(x, y, bugDirection, direction, length, initialProgress, air
         const dist = Math.sqrt(dx * dx + dy * dy);
 
         if (onGround) {
-            if (dist > length)
+            if (dist > length) {
                 onGround = false;
+
+                if (counterpart)
+                    counterpart.stepDown();
+            }
         }
         else {
             const xAim = x + Math.cos(bugDirection + direction) * length;
@@ -52,12 +70,11 @@ const Leg = function(x, y, bugDirection, direction, length, initialProgress, air
 
             if (lengthAim < length * (1 - Leg.GROUND_THRESHOLD))
                 onGround = true;
-
-            footX += (dxAim / lengthAim) * airSpeed * timeStep;
-            footY += (dyAim / lengthAim) * airSpeed * timeStep;
+            else {
+                footX += (dxAim / lengthAim) * airSpeed * timeStep;
+                footY += (dyAim / lengthAim) * airSpeed * timeStep;
+            }
         }
-
-        draw(context, dist);
     };
 
     applyInitialProgress();

@@ -14,7 +14,14 @@ const resize = () => {
 };
 
 const spawn = () => {
-    bugs.push(new Bug(canvas.width * Math.random(), canvas.height * Math.random()));
+    const newBug = new Bug(canvas.width * Math.random(), canvas.height * Math.random(), null);
+    const child1 = new Bug(0, 0, newBug, 32);
+    const child2 = new Bug(0, 0, child1, 32);
+
+    newBug.setChild(child1);
+    child1.setChild(child2);
+
+    bugs.push(newBug);
 };
 
 const update = timeStep => {
@@ -31,9 +38,14 @@ const update = timeStep => {
         spawn();
     }
 
-    for (let i = bugs.length; i-- > 0;)
-        if (bugs[i].update(timeStep, context, canvas.width, canvas.height))
+    for (let i = bugs.length; i-- > 0;) {
+        if (bugs[i].update(timeStep, canvas.width, canvas.height)) {
             bugs.splice(i, 1);
+        }
+
+        bugs[i].drawLegs(context);
+        bugs[i].drawBody(context);
+    }
 };
 
 const loopFunction = () => {
