@@ -1,6 +1,9 @@
 const Bug = function(x, y, body, right, parent, followDistance) {
     const legs = [];
     const noise = cubicNoiseConfig(Math.random());
+    const eyeRadius = Math.max(body.getThickness() * 0.5 * Math.random(), Bug.EYE_RADIUS_MIN);
+    const eyeSpacing = (body.getThickness() * 0.5 - eyeRadius) * Math.random();
+    const pupilRadius = eyeRadius * Bug.EYE_PUPIL_RATIO;
     let child = null;
     let wings = null;
     let lifetime = 0;
@@ -39,35 +42,36 @@ const Bug = function(x, y, body, right, parent, followDistance) {
         legs.push(l, r);
     };
 
-    const drawEye = (x, y, context) => {
+    const drawEye = (x, y, eyeRadius, pupilRadius, context) => {
         const eyeAngle = (cubicNoiseSample1(noise, lifetime * Bug.EYE_SCALE) - 0.5) * Bug.EYE_DEVIANCE;
 
         context.save();
 
-        context.translate(x, y);
+        context.translate(x + eyeRadius, y);
         context.fillStyle = "white";
         context.strokeStyle = "black";
 
         context.beginPath();
-        context.arc(0, 0, 5, 0, Math.PI * 2);
+        context.arc(0, 0, eyeRadius, 0, Math.PI * 2);
         context.fill();
         context.stroke();
 
         context.rotate(eyeAngle);
 
         context.beginPath();
+
         if (blink) {
             context.strokeStyle = "black";
-            context.moveTo(3, -2);
-            context.lineTo(3, 2);
+            context.moveTo(eyeRadius - pupilRadius, -pupilRadius);
+            context.lineTo(eyeRadius - pupilRadius, pupilRadius);
             context.stroke();
         }
         else {
             context.fillStyle = "black";
             context.arc(
-                3,
+                eyeRadius - pupilRadius,
                 0,
-                2,
+                pupilRadius,
                 0,
                 Math.PI * 2);
             context.fill();
@@ -77,8 +81,8 @@ const Bug = function(x, y, body, right, parent, followDistance) {
     };
 
     const drawEyes = context => {
-        drawEye(12, -6, context);
-        drawEye(12, 6, context);
+        drawEye(0, -eyeRadius - eyeSpacing * 0.5, eyeRadius, pupilRadius, context);
+        drawEye(0, eyeRadius + eyeSpacing * 0.5, eyeRadius, pupilRadius, context);
     };
 
     const drawBody = context => {
@@ -189,3 +193,5 @@ Bug.EYE_DEVIANCE = Math.PI;
 Bug.EYE_BLINK_DELAY_MIN = 1;
 Bug.EYE_BLINK_DELAY_MAX = 4;
 Bug.EYE_BLINK_DURATION = 0.1;
+Bug.EYE_PUPIL_RATIO = 2 / 5;
+Bug.EYE_RADIUS_MIN = 5;

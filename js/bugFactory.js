@@ -29,7 +29,7 @@ const BugFactory = function() {
     };
 };
 
-BugFactory.WING_CHANCE = 0.8;
+BugFactory.WING_CHANCE = 0.6;
 BugFactory.WING_LENGTH_MIN = 2;
 BugFactory.WING_LENGTH_MAX = 4;
 BugFactory.WING_SIZE_MIN = 70;
