@@ -1,4 +1,4 @@
-const Leg = function(x, y, bugDirection, direction, length, initialProgress, airSpeed) {
+const Leg = function(x, y, bugDirection, direction, length, initialProgress) {
     let counterpart = null;
     let onGround = true;
     let footX = x + Math.cos(bugDirection + direction) * length;
@@ -45,7 +45,7 @@ const Leg = function(x, y, bugDirection, direction, length, initialProgress, air
         context.stroke();
     };
 
-    this.update = (newX, newY, bugDirection, timeStep) => {
+    this.update = (newX, newY, bugDirection, speed, timeStep) => {
         x = newX;
         y = newY;
 
@@ -71,8 +71,8 @@ const Leg = function(x, y, bugDirection, direction, length, initialProgress, air
             if (lengthAim < length * (1 - Leg.GROUND_THRESHOLD))
                 onGround = true;
             else {
-                footX += (dxAim / lengthAim) * airSpeed * timeStep;
-                footY += (dyAim / lengthAim) * airSpeed * timeStep;
+                footX += (dxAim / lengthAim) * speed * timeStep;
+                footY += (dyAim / lengthAim) * speed * timeStep;
             }
         }
     };

@@ -2,7 +2,8 @@ const Bug = function(x, y, parent, followDistance) {
     const legs = [];
     const noise = cubicNoiseConfig(Math.random());
     let child = null;
-    let speed = 80;
+    let lifetime = 0;
+    let speed;
     let direction;
 
     if (parent) {
@@ -11,7 +12,10 @@ const Bug = function(x, y, parent, followDistance) {
         direction = parent.getDirection();
     }
 
-    const sampleDirection = () => {
+    const sampleMotion = () => {
+        speed = cubicNoiseSample1(
+            noise,
+            lifetime * Bug.SPEED_SCALE) * 120;
         direction = cubicNoiseSample2(
             noise,
             x * Bug.NOISE_SCALE,
@@ -19,8 +23,8 @@ const Bug = function(x, y, parent, followDistance) {
     };
 
     const makeBody = () => {
-        const l = new Leg(x, y, direction, -0.9, 32, 0, speed * 4);
-        const r = new Leg(x, y, direction, 0.9, 32, 1, speed * 4);
+        const l = new Leg(x, y, direction, -0.8, 32, 0, speed * 4);
+        const r = new Leg(x, y, direction, 0.8, 32, 1, speed * 4);
 
         l.setCounterpart(r);
         r.setCounterpart(l);
@@ -45,6 +49,8 @@ const Bug = function(x, y, parent, followDistance) {
     this.getY = () => y;
 
     this.getDirection = () => direction;
+
+    this.getSpeed = () => speed;
 
     this.setChild = bug => {
         child = bug;
@@ -79,20 +85,24 @@ const Bug = function(x, y, parent, followDistance) {
 
             x += (dx / distance) * (distance - followDistance);
             y += (dy / distance) * (distance - followDistance);
+
             direction = Math.atan2(dy, dx);
+            speed = parent.getSpeed();
         }
         else {
+            lifetime += timeStep;
+
             x += Math.cos(direction) * speed * timeStep;
             y += Math.sin(direction) * speed * timeStep;
 
-            sampleDirection();
+            sampleMotion();
         }
 
         if (child)
             child.update(timeStep, width, height);
 
         for (const leg of legs)
-            leg.update(x, y, direction, timeStep);
+            leg.update(x, y, direction, speed * 4, timeStep);
 
         return x < -Bug.VISIBILITY_RADIUS ||
             y < -Bug.VISIBILITY_RADIUS ||
@@ -101,7 +111,7 @@ const Bug = function(x, y, parent, followDistance) {
     };
 
     if (!parent)
-        sampleDirection();
+        sampleMotion();
 
     makeBody();
 };
@@ -109,4 +119,5 @@ const Bug = function(x, y, parent, followDistance) {
 Bug.VISIBILITY_RADIUS = 400;
 Bug.SPAWN_RADIUS = 200;
 Bug.NOISE_SCALE = 0.0065;
-Bug.NOISE_ANGLE_MAX = Math.PI * 4;
+Bug.NOISE_ANGLE_MAX = Math.PI * 6;
+Bug.SPEED_SCALE = 0.1;
