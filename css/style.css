@@ -1,0 +1,15 @@
+body {
+    margin: 0;
+}
+
+#wrapper {
+    width: 100vw;
+    height: 100vh;
+    background-color: #74b490;
+    overflow: hidden;
+}
+
+#wrapper #renderer {
+    width: 100%;
+    height: 100%;
+}
