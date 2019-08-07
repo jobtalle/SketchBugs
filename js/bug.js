@@ -4,6 +4,9 @@ const Bug = function(x, y, body, right, parent, followDistance) {
     const eyeRadius = Math.max(body.getThickness() * 0.5 * Math.random() * Bug.EYE_RADIUS_FACTOR_MAX, Bug.EYE_RADIUS_MIN);
     const eyeSpacing = (body.getThickness() * 0.5 - eyeRadius) * Math.random();
     const pupilRadius = eyeRadius * Bug.EYE_PUPIL_RATIO;
+    const speedScale = Bug.SPEED_SCALE_MIN + (Bug.SPEED_SCALE_MAX - Bug.SPEED_SCALE_MIN) * Math.random();
+    const noiseScale = Bug.NOISE_SCALE_MIN + (Bug.NOISE_SCALE_MAX - Bug.NOISE_SCALE_MIN) * Math.random();
+    const speedMax = Bug.SPEED_MAX_MIN + (Bug.SPEED_MAX_MAX - Bug.SPEED_MAX_MIN) * Math.random();
     let child = null;
     let wings = null;
     let lifetime = 0;
@@ -21,11 +24,11 @@ const Bug = function(x, y, body, right, parent, followDistance) {
     const sampleMotion = () => {
         speed = cubicNoiseSample1(
             noise,
-            lifetime * Bug.SPEED_SCALE) * Bug.SPEED_MAX;
+            lifetime * speedScale) * speedMax;
         direction = cubicNoiseSample2(
             noise,
-            x * Bug.NOISE_SCALE,
-            y * Bug.NOISE_SCALE) * Math.PI * 2;
+            x * noiseScale,
+            y * noiseScale) * Math.PI * 2;
 
         if (!right)
             direction += Math.PI;
@@ -182,12 +185,15 @@ const Bug = function(x, y, body, right, parent, followDistance) {
 
 Bug.VISIBILITY_RADIUS = 500;
 Bug.SPAWN_RADIUS = 400;
-Bug.NOISE_SCALE = 0.0065;
-Bug.SPEED_SCALE = 0.3;
+Bug.NOISE_SCALE_MIN = 0.003;
+Bug.NOISE_SCALE_MAX = 0.01;
+Bug.SPEED_SCALE_MIN = 0.1;
+Bug.SPEED_SCALE_MAX = 0.6;
 Bug.SEGMENT_OVERLAP = 0.4;
 Bug.LEG_SCALE = 1.5;
 Bug.LEG_LENGTH_MIN = 18;
-Bug.SPEED_MAX = 160;
+Bug.SPEED_MAX_MIN = 100;
+Bug.SPEED_MAX_MAX = 180;
 Bug.EYE_SCALE = 1.5;
 Bug.EYE_DEVIANCE = Math.PI;
 Bug.EYE_BLINK_DELAY_MIN = 1;
