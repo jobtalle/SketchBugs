@@ -1,4 +1,4 @@
-const Bug = function(x, y, body, right, parent, followDistance) {
+const Bug = function(x, y, body, right, hasLegs, parent, followDistance) {
     const legs = [];
     const noise = cubicNoiseConfig(Math.random());
     const eyeRadius = Math.max(body.getThickness() * 0.5 * Math.random() * Bug.EYE_RADIUS_FACTOR_MAX, Bug.EYE_RADIUS_MIN);
