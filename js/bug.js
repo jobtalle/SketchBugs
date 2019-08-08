@@ -1,6 +1,14 @@
-const Bug = function(x, y, body, right, hasLegs, parent, followDistance) {
+const Bug = function(x, y, body, right, parent, followDistance) {
     const legs = [];
     const noise = cubicNoiseConfig(Math.random());
+    const eyeRadius = Math.max(body.getThickness() * 0.5 * Math.random() * Bug.EYE_RADIUS_FACTOR_MAX, Bug.EYE_RADIUS_MIN);
+    const eyeSpacing = (body.getThickness() * 0.5 - eyeRadius) * Math.random();
+    const eyeScale = Bug.EYE_SCALE_MIN + (Bug.EYE_SCALE_MAX - Bug.EYE_SCALE_MIN) * Math.random();
+    const pupilRadius = eyeRadius * Bug.EYE_PUPIL_RATIO;
+    const speedScale = Bug.SPEED_SCALE_MIN + (Bug.SPEED_SCALE_MAX - Bug.SPEED_SCALE_MIN) * Math.random();
+    const noiseScale = Bug.NOISE_SCALE_MIN + (Bug.NOISE_SCALE_MAX - Bug.NOISE_SCALE_MIN) * Math.random();
+    const speedMax = Bug.SPEED_MAX_MIN + (Bug.SPEED_MAX_MAX - Bug.SPEED_MAX_MIN) * Math.random();
+    const eyeDeviance = Bug.EYE_DEVIANCE_MIN + (Bug.EYE_DEVIANCE_MAX - Bug.EYE_DEVIANCE_MIN) * Math.random();
     let child = null;
     let wings = null;
     let lifetime = 0;
@@ -18,23 +26,19 @@ const Bug = function(x, y, body, right, hasLegs, parent, followDistance) {
     const sampleMotion = () => {
         speed = cubicNoiseSample1(
             noise,
-            lifetime * Bug.SPEED_SCALE) * Bug.SPEED_MAX;
+            lifetime * speedScale) * speedMax;
         direction = cubicNoiseSample2(
             noise,
-            x * Bug.NOISE_SCALE,
-            y * Bug.NOISE_SCALE) * Math.PI * 2;
+            x * noiseScale,
+            y * noiseScale) * Math.PI * 2;
 
         if (!right)
             direction += Math.PI;
     };
 
     const makeBody = () => {
-        if (!hasLegs)
-            return;
-
-        const legLength = Math.max(Bug.LEG_LENGTH_MIN, body.getThickness() * Bug.LEG_SCALE);
-        const l = new Leg(x, y, direction, -body.getLegAngle(), legLength, Math.random(), speed * 4);
-        const r = new Leg(x, y, direction, body.getLegAngle(), legLength, Math.random(), speed * 4);
+        const l = new Leg(x, y, direction, -body.getLegAngle(), body.getLegLength(), Math.random(), speed * 4);
+        const r = new Leg(x, y, direction, body.getLegAngle(), body.getLegLength(), Math.random(), speed * 4);
 
         l.setCounterpart(r);
         r.setCounterpart(l);
@@ -42,35 +46,36 @@ const Bug = function(x, y, body, right, hasLegs, parent, followDistance) {
         legs.push(l, r);
     };
 
-    const drawEye = (x, y, context) => {
-        const eyeAngle = (cubicNoiseSample1(noise, lifetime * Bug.EYE_SCALE) - 0.5) * Bug.EYE_DEVIANCE;
+    const drawEye = (x, y, eyeRadius, pupilRadius, context) => {
+        const eyeAngle = (cubicNoiseSample1(noise, lifetime * eyeScale) - 0.5) * eyeDeviance;
 
         context.save();
 
-        context.translate(x, y);
+        context.translate(x + eyeRadius, y);
         context.fillStyle = "white";
         context.strokeStyle = "black";
 
         context.beginPath();
-        context.arc(0, 0, 5, 0, Math.PI * 2);
+        context.arc(0, 0, eyeRadius, 0, Math.PI * 2);
         context.fill();
         context.stroke();
 
         context.rotate(eyeAngle);
 
         context.beginPath();
+
         if (blink) {
             context.strokeStyle = "black";
-            context.moveTo(3, -2);
-            context.lineTo(3, 2);
+            context.moveTo(eyeRadius - pupilRadius, -pupilRadius);
+            context.lineTo(eyeRadius - pupilRadius, pupilRadius);
             context.stroke();
         }
         else {
             context.fillStyle = "black";
             context.arc(
-                3,
+                eyeRadius - pupilRadius,
                 0,
-                2,
+                pupilRadius,
                 0,
                 Math.PI * 2);
             context.fill();
@@ -80,8 +85,8 @@ const Bug = function(x, y, body, right, hasLegs, parent, followDistance) {
     };
 
     const drawEyes = context => {
-        drawEye(12, -6, context);
-        drawEye(12, 6, context);
+        drawEye(0, -eyeRadius - eyeSpacing * 0.5, eyeRadius, pupilRadius, context);
+        drawEye(0, eyeRadius + eyeSpacing * 0.5, eyeRadius, pupilRadius, context);
     };
 
     const drawBody = context => {
@@ -181,14 +186,20 @@ const Bug = function(x, y, body, right, hasLegs, parent, followDistance) {
 
 Bug.VISIBILITY_RADIUS = 500;
 Bug.SPAWN_RADIUS = 400;
-Bug.NOISE_SCALE = 0.0065;
-Bug.SPEED_SCALE = 0.3;
+Bug.NOISE_SCALE_MIN = 0.003;
+Bug.NOISE_SCALE_MAX = 0.01;
+Bug.SPEED_SCALE_MIN = 0.1;
+Bug.SPEED_SCALE_MAX = 0.6;
 Bug.SEGMENT_OVERLAP = 0.4;
-Bug.LEG_SCALE = 1.5;
-Bug.LEG_LENGTH_MIN = 18;
-Bug.SPEED_MAX = 160;
-Bug.EYE_SCALE = 1.5;
-Bug.EYE_DEVIANCE = Math.PI;
+Bug.SPEED_MAX_MIN = 100;
+Bug.SPEED_MAX_MAX = 180;
+Bug.EYE_SCALE_MIN = 0.2;
+Bug.EYE_SCALE_MAX = 1.8;
+Bug.EYE_DEVIANCE_MIN = Math.PI * 0.8;
+Bug.EYE_DEVIANCE_MAX = Math.PI * 1.5;
 Bug.EYE_BLINK_DELAY_MIN = 1;
 Bug.EYE_BLINK_DELAY_MAX = 4;
 Bug.EYE_BLINK_DURATION = 0.1;
+Bug.EYE_PUPIL_RATIO = 2 / 5;
+Bug.EYE_RADIUS_MIN = 5;
+Bug.EYE_RADIUS_FACTOR_MAX = 0.8;

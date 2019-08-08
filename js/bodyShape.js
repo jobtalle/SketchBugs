@@ -2,6 +2,7 @@ const BodyShape = function() {
     const length = BodyShape.LENGTH_MIN + (BodyShape.LENGTH_MAX - BodyShape.LENGTH_MIN) * Math.random();
     const widths = [];
     const legAngle = BodyShape.LEG_ANGLE_MIN + (BodyShape.LEG_ANGLE_MAX - BodyShape.LEG_ANGLE_MIN) * Math.random();
+    const legFactor = BodyShape.LEG_FACTOR_MIN + (BodyShape.LEG_FACTOR_MAX - BodyShape.LEG_FACTOR_MIN) * Math.random();
     const thicknessMultiplier = BodyShape.THICKNESS_MULTIPLIER_MIN + (1 - BodyShape.THICKNESS_MULTIPLIER_MIN) * Math.random();
     const fill = BodyShape.COLORS[Math.floor(Math.random() * BodyShape.COLORS.length)];
     let thickness = 0;
@@ -15,6 +16,8 @@ const BodyShape = function() {
     this.getThickness = () => thickness;
 
     this.getLegAngle = () => legAngle;
+
+    this.getLegLength = () => Math.max(BodyShape.LEG_LENGTH_MIN, thickness * BodyShape.LEG_SCALE * legFactor);
 
     this.draw = context => {
         const right = this.getLength() * 0.5;
@@ -58,6 +61,10 @@ BodyShape.LENGTH_SEGMENT = 6;
 BodyShape.LEG_ANGLE_MIN = 0.3;
 BodyShape.LEG_ANGLE_MAX = 0.9;
 BodyShape.SINE_WAVE_PORTION = 0.9;
+BodyShape.LEG_SCALE = 1.8;
+BodyShape.LEG_LENGTH_MIN = 18;
+BodyShape.LEG_FACTOR_MIN = 0.5;
+BodyShape.LEG_FACTOR_MAX = 1;
 BodyShape.COLORS = [
     "rgba(107,142,35,0.7)",
     "rgba(178,34,34,0.7)",
