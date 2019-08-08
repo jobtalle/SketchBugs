@@ -37,6 +37,9 @@ const Bug = function(x, y, body, right, hasLegs, parent, followDistance) {
     };
 
     const makeBody = () => {
+        if (!hasLegs)
+            return;
+
         const l = new Leg(x, y, direction, -body.getLegAngle(), body.getLegLength(), Math.random(), speed * 4);
         const r = new Leg(x, y, direction, body.getLegAngle(), body.getLegLength(), Math.random(), speed * 4);
 
