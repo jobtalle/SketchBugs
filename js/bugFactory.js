@@ -1,14 +1,19 @@
 const BugFactory = function() {
     this.makeBug = (right, x, y) => {
         let lastBug;
+        let legs = true;
         const lengthRandomizer = Math.random();
         const length = BugFactory.LENGTH_MIN + Math.floor(lengthRandomizer * lengthRandomizer * lengthRandomizer * (BugFactory.LENGTH_MAX - BugFactory.LENGTH_MIN + 1));
         const body = new BodyShape();
-        const newBug = lastBug = new Bug(x, y, body, right, null);
+        const newBug = lastBug = new Bug(x, y, body, right, legs, null);
         const segments = [];
+        const interleaveLegs = length >= BugFactory.INTERLEAVE_LEGS_THRESHOLD && (length & 1) === 1 && Math.random() < BugFactory.INTERLEAVE_LEGS_CHANCE;
 
         for (let i = 0; i < length - 1; ++i) {
-            const newSegment = new Bug(0, 0, body, right, lastBug, body.getLength() * Bug.SEGMENT_OVERLAP);
+            if (interleaveLegs)
+                legs = !legs;
+
+            const newSegment = new Bug(0, 0, body, right, legs, lastBug, body.getLength() * Bug.SEGMENT_OVERLAP);
 
             segments.push(newSegment);
             lastBug.setChild(newSegment);
@@ -37,3 +42,5 @@ BugFactory.WING_ROOT_THRESHOLD = 2;
 BugFactory.WING_SCALE = 1;
 BugFactory.LENGTH_MIN = 2;
 BugFactory.LENGTH_MAX = 10;
+BugFactory.INTERLEAVE_LEGS_THRESHOLD = 3;
+BugFactory.INTERLEAVE_LEGS_CHANCE = 0.7;

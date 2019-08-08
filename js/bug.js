@@ -1,4 +1,4 @@
-const Bug = function(x, y, body, right, parent, followDistance) {
+const Bug = function(x, y, body, right, hasLegs, parent, followDistance) {
     const legs = [];
     const noise = cubicNoiseConfig(Math.random());
     let child = null;
@@ -29,6 +29,9 @@ const Bug = function(x, y, body, right, parent, followDistance) {
     };
 
     const makeBody = () => {
+        if (!hasLegs)
+            return;
+
         const legLength = Math.max(Bug.LEG_LENGTH_MIN, body.getThickness() * Bug.LEG_SCALE);
         const l = new Leg(x, y, direction, -body.getLegAngle(), legLength, Math.random(), speed * 4);
         const r = new Leg(x, y, direction, body.getLegAngle(), legLength, Math.random(), speed * 4);
