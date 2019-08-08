@@ -6,7 +6,7 @@ const BugFactory = function() {
         const length = BugFactory.LENGTH_MIN + Math.floor(lengthRandomizer * lengthRandomizer * lengthRandomizer * (BugFactory.LENGTH_MAX - BugFactory.LENGTH_MIN + 1));
         const body = new BodyShape();
         const interleaveLegs = length >= BugFactory.INTERLEAVE_LEGS_THRESHOLD && Math.random() < BugFactory.INTERLEAVE_LEGS_CHANCE;
-        const newBug = lastBug = new Bug(x, y, body, right, interleaveLegs ? (length & 1) === 1 : legs, null);
+        const newBug = lastBug = new Bug(x, y, body, right, interleaveLegs ? (legs = (length & 1) === 1) : legs, null);
         const segments = [];
 
         for (let i = 0; i < length - 1; ++i) {
