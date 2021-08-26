@@ -1,6 +1,6 @@
 const Wings = function(radius) {
-    const noise = cubicNoiseConfig(Math.random());
-    const radians = Wings.RADIANS_MIN + (Wings.RADIANS_MAX - Wings.RADIANS_MIN) * Math.random();
+    const noise = cubicNoiseConfig(random.getFloat());
+    const radians = Wings.RADIANS_MIN + (Wings.RADIANS_MAX - Wings.RADIANS_MIN) * random.getFloat();
     const radii = [];
 
     const drawWing = (context, sign, step) => {
@@ -47,7 +47,7 @@ const Wings = function(radius) {
 };
 
 Wings.COLOR = "rgba(200,200,200,0.4)";
-Wings.PRECISION = 10;
+Wings.PRECISION = 18;
 Wings.RADIANS_MIN = Math.PI * 0.2;
 Wings.RADIANS_MAX = Math.PI * 0.5;
 Wings.SPEED_FLUTTER = 12;

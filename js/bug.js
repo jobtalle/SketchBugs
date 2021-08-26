@@ -1,14 +1,14 @@
-const Bug = function(x, y, body, right, hasLegs, parent, followDistance) {
+const Bug = function(random, x, y, body, right, hasLegs, parent, followDistance) {
     const legs = [];
-    const noise = cubicNoiseConfig(Math.random());
-    const eyeRadius = Math.max(body.getThickness() * 0.5 * Math.random() * Bug.EYE_RADIUS_FACTOR_MAX, Bug.EYE_RADIUS_MIN);
-    const eyeSpacing = (body.getThickness() * 0.5 - eyeRadius) * Math.random();
-    const eyeScale = Bug.EYE_SCALE_MIN + (Bug.EYE_SCALE_MAX - Bug.EYE_SCALE_MIN) * Math.random();
+    const noise = cubicNoiseConfig(random.getFloat());
+    const eyeRadius = Math.max(body.getThickness() * 0.5 * random.getFloat() * Bug.EYE_RADIUS_FACTOR_MAX, Bug.EYE_RADIUS_MIN);
+    const eyeSpacing = (body.getThickness() * 0.5 - eyeRadius) * random.getFloat();
+    const eyeScale = Bug.EYE_SCALE_MIN + (Bug.EYE_SCALE_MAX - Bug.EYE_SCALE_MIN) * random.getFloat();
     const pupilRadius = eyeRadius * Bug.EYE_PUPIL_RATIO;
-    const speedScale = Bug.SPEED_SCALE_MIN + (Bug.SPEED_SCALE_MAX - Bug.SPEED_SCALE_MIN) * Math.random();
-    const noiseScale = Bug.NOISE_SCALE_MIN + (Bug.NOISE_SCALE_MAX - Bug.NOISE_SCALE_MIN) * Math.random();
-    const speedMax = Bug.SPEED_MAX_MIN + (Bug.SPEED_MAX_MAX - Bug.SPEED_MAX_MIN) * Math.random();
-    const eyeDeviance = Bug.EYE_DEVIANCE_MIN + (Bug.EYE_DEVIANCE_MAX - Bug.EYE_DEVIANCE_MIN) * Math.random();
+    const speedScale = Bug.SPEED_SCALE_MIN + (Bug.SPEED_SCALE_MAX - Bug.SPEED_SCALE_MIN) * random.getFloat();
+    const noiseScale = Bug.NOISE_SCALE_MIN + (Bug.NOISE_SCALE_MAX - Bug.NOISE_SCALE_MIN) * random.getFloat();
+    const speedMax = Bug.SPEED_MAX_MIN + (Bug.SPEED_MAX_MAX - Bug.SPEED_MAX_MIN) * random.getFloat();
+    const eyeDeviance = Bug.EYE_DEVIANCE_MIN + (Bug.EYE_DEVIANCE_MAX - Bug.EYE_DEVIANCE_MIN) * random.getFloat();
     let child = null;
     let wings = null;
     let lifetime = 0;
@@ -40,8 +40,8 @@ const Bug = function(x, y, body, right, hasLegs, parent, followDistance) {
         if (!hasLegs)
             return;
 
-        const l = new Leg(x, y, direction, -body.getLegAngle(), body.getLegLength(), Math.random(), speed * 4);
-        const r = new Leg(x, y, direction, body.getLegAngle(), body.getLegLength(), Math.random(), speed * 4);
+        const l = new Leg(x, y, direction, -body.getLegAngle(), body.getLegLength(), random.getFloat(), speed * 4);
+        const r = new Leg(x, y, direction, body.getLegAngle(), body.getLegLength(), random.getFloat(), speed * 4);
 
         l.setCounterpart(r);
         r.setCounterpart(l);
@@ -161,7 +161,7 @@ const Bug = function(x, y, body, right, hasLegs, parent, followDistance) {
 
             if ((blinkDelay -= timeStep) < 0) {
                 if (blink)
-                    blinkDelay = Bug.EYE_BLINK_DELAY_MIN + (Bug.EYE_BLINK_DELAY_MAX - Bug.EYE_BLINK_DELAY_MIN) * Math.random();
+                    blinkDelay = Bug.EYE_BLINK_DELAY_MIN + (Bug.EYE_BLINK_DELAY_MAX - Bug.EYE_BLINK_DELAY_MIN) * random.getFloat();
                 else
                     blinkDelay = Bug.EYE_BLINK_DURATION;
 

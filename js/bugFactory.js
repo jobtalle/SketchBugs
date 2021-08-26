@@ -1,19 +1,19 @@
-const BugFactory = function() {
+const BugFactory = function(random) {
     this.makeBug = (right, x, y) => {
         let lastBug;
         let legs = true;
-        const lengthRandomizer = Math.random();
+        const lengthRandomizer = random.getFloat();
         const length = BugFactory.LENGTH_MIN + Math.floor(lengthRandomizer * lengthRandomizer * lengthRandomizer * (BugFactory.LENGTH_MAX - BugFactory.LENGTH_MIN + 1));
-        const body = new BodyShape();
-        const interleaveLegs = length >= BugFactory.INTERLEAVE_LEGS_THRESHOLD && Math.random() < BugFactory.INTERLEAVE_LEGS_CHANCE;
-        const newBug = lastBug = new Bug(x, y, body, right, interleaveLegs ? (legs = (length & 1) === 1) : legs, null);
+        const body = new BodyShape(random);
+        const interleaveLegs = length >= BugFactory.INTERLEAVE_LEGS_THRESHOLD && random.getFloat() < BugFactory.INTERLEAVE_LEGS_CHANCE;
+        const newBug = lastBug = new Bug(random, x, y, body, right, interleaveLegs ? (legs = (length & 1) === 1) : legs, null);
         const segments = [];
 
         for (let i = 0; i < length - 1; ++i) {
             if (interleaveLegs)
                 legs = !legs;
 
-            const newSegment = new Bug(0, 0, body, right, legs, lastBug, body.getLength() * Bug.SEGMENT_OVERLAP);
+            const newSegment = new Bug(random, 0, 0, body, right, legs, lastBug, body.getLength() * Bug.SEGMENT_OVERLAP);
 
             segments.push(newSegment);
             lastBug.setChild(newSegment);
@@ -21,7 +21,7 @@ const BugFactory = function() {
             lastBug = newSegment;
         }
 
-        if (length >= BugFactory.WING_LENGTH_MIN && length <= BugFactory.WING_LENGTH_MAX && Math.random() < BugFactory.WING_CHANCE) {
+        if (length >= BugFactory.WING_LENGTH_MIN && length <= BugFactory.WING_LENGTH_MAX && random.getFloat() < BugFactory.WING_CHANCE) {
             const wingSize = Math.max(body.getThickness() * BugFactory.WING_SCALE * length, BugFactory.WING_SIZE_MIN);
 
             if (length <= BugFactory.WING_ROOT_THRESHOLD)

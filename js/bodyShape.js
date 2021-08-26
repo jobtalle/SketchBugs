@@ -1,10 +1,10 @@
-const BodyShape = function() {
-    const length = BodyShape.LENGTH_MIN + (BodyShape.LENGTH_MAX - BodyShape.LENGTH_MIN) * Math.random();
+const BodyShape = function(random) {
+    const length = BodyShape.LENGTH_MIN + (BodyShape.LENGTH_MAX - BodyShape.LENGTH_MIN) * random.getFloat();
     const widths = [];
-    const legAngle = BodyShape.LEG_ANGLE_MIN + (BodyShape.LEG_ANGLE_MAX - BodyShape.LEG_ANGLE_MIN) * Math.random();
-    const legFactor = BodyShape.LEG_FACTOR_MIN + (BodyShape.LEG_FACTOR_MAX - BodyShape.LEG_FACTOR_MIN) * Math.random();
-    const thicknessMultiplier = BodyShape.THICKNESS_MULTIPLIER_MIN + (1 - BodyShape.THICKNESS_MULTIPLIER_MIN) * Math.random();
-    const fill = BodyShape.COLORS[Math.floor(Math.random() * BodyShape.COLORS.length)];
+    const legAngle = BodyShape.LEG_ANGLE_MIN + (BodyShape.LEG_ANGLE_MAX - BodyShape.LEG_ANGLE_MIN) * random.getFloat();
+    const legFactor = BodyShape.LEG_FACTOR_MIN + (BodyShape.LEG_FACTOR_MAX - BodyShape.LEG_FACTOR_MIN) * random.getFloat();
+    const thicknessMultiplier = BodyShape.THICKNESS_MULTIPLIER_MIN + (1 - BodyShape.THICKNESS_MULTIPLIER_MIN) * random.getFloat();
+    const fill = BodyShape.COLORS[Math.floor(random.getFloat() * BodyShape.COLORS.length)];
     let thickness = 0;
 
     const getWidthMultiplier = i => {
@@ -43,7 +43,7 @@ const BodyShape = function() {
     };
 
     while (this.getLength() < length) {
-        const newThickness = (BodyShape.WIDTH_MIN + (BodyShape.WIDTH_MAX - BodyShape.WIDTH_MIN) * Math.random()) * thicknessMultiplier;
+        const newThickness = (BodyShape.WIDTH_MIN + (BodyShape.WIDTH_MAX - BodyShape.WIDTH_MIN) * random.getFloat()) * thicknessMultiplier;
 
         if (thickness < newThickness)
             thickness = newThickness;
