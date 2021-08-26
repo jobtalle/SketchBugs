@@ -1,4 +1,4 @@
-const BUG_TIME_MINIMUM = 1;
+const BUG_TIME_MINIMUM = 2;
 const BUG_TIME_MAXIMUM = 3;
 const TIME_STEP_MAX = 0.2;
 
@@ -21,12 +21,12 @@ const makeSpawnLocation = right => {
     if (right)
         return {
             x: canvas.width + Bug.SPAWN_RADIUS,
-            y: canvas.height * random.getFloat()
+            y: (canvas.height + Bug.SPAWN_RADIUS) * random.getFloat() - Bug.SPAWN_RADIUS * .5
         };
     else
         return {
             x: -Bug.SPAWN_RADIUS,
-            y: canvas.height * random.getFloat()
+            y: (canvas.height + Bug.SPAWN_RADIUS) * random.getFloat() - Bug.SPAWN_RADIUS * .5
         };
 };
 
@@ -41,7 +41,7 @@ const spawn = center => {
     const right = random.getFloat() < 0.5;
     const location = center ? makeInitialLocation() : makeSpawnLocation(right);
 
-    bugs.push(factory.makeBug(new Random(bugSeed), right, location.x, location.y));
+    bugs.push(factory.makeBug(new Random(bugSeed), right, location.x, location.y, random.getFloat() * 160));
 };
 
 const update = (timeStep, render = true) => {
@@ -78,5 +78,5 @@ window.onresize = resize;
 resize();
 requestAnimationFrame(loopFunction);
 
-for (let i = 0; i < 1000; ++i)
+for (let i = 0; i < 5000; ++i)
     update(fps, false);

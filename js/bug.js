@@ -1,4 +1,4 @@
-const Bug = function(random, x, y, body, right, hasLegs, parent, followDistance) {
+const Bug = function(random, motionOffset, x, y, body, right, hasLegs, parent, followDistance) {
     const legs = [];
     const noise = cubicNoiseConfig(random.getFloat());
     const eyeRadius = Math.max(body.getThickness() * 0.5 * random.getFloat() * Bug.EYE_RADIUS_FACTOR_MAX, Bug.EYE_RADIUS_MIN);
@@ -30,7 +30,7 @@ const Bug = function(random, x, y, body, right, hasLegs, parent, followDistance)
         direction = cubicNoiseSample2(
             noise,
             x * noiseScale,
-            y * noiseScale) * Math.PI * 2;
+            (y + motionOffset) * noiseScale) * Math.PI * 2;
 
         if (!right)
             direction += Math.PI;
