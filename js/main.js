@@ -1,5 +1,5 @@
 const BUG_TIME_MINIMUM = 1;
-const BUG_TIME_MAXIMUM = 2;
+const BUG_TIME_MAXIMUM = 3;
 const TIME_STEP_MAX = 0.2;
 
 const fps = 1 / 60;
@@ -51,7 +51,7 @@ const update = (timeStep, render = true) => {
     if (render)
         context.clearRect(0, 0, canvas.width, canvas.height);
 
-    if ((bugTimer -= timeStep) < 0) {
+    if ((bugTimer -= timeStep * canvas.width * canvas.height / 1000000) < 0) {
         bugTimer = BUG_TIME_MINIMUM + (BUG_TIME_MAXIMUM - BUG_TIME_MINIMUM) * random.getFloat();
 
         spawn(false);
