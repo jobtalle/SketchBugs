@@ -1,5 +1,5 @@
 const BUG_TIME_MINIMUM = 1;
-const BUG_TIME_MAXIMUM = 4;
+const BUG_TIME_MAXIMUM = 2;
 const TIME_STEP_MAX = 0.2;
 
 const fps = 1 / 60;
@@ -7,8 +7,9 @@ const wrapper = document.getElementById("wrapper");
 const canvas = document.getElementById("renderer");
 const context = canvas.getContext("2d");
 const bugs = [];
+const bugSeed = Math.floor(Math.random() * Random.MODULUS);
 const random = new Random(Math.floor(Math.random() * Random.MODULUS));
-const factory = new BugFactory(random);
+const factory = new BugFactory();
 let bugTimer = 0;
 
 const resize = () => {
@@ -40,7 +41,7 @@ const spawn = center => {
     const right = random.getFloat() < 0.5;
     const location = center ? makeInitialLocation() : makeSpawnLocation(right);
 
-    bugs.push(factory.makeBug(right, location.x, location.y));
+    bugs.push(factory.makeBug(new Random(bugSeed), right, location.x, location.y));
 };
 
 const update = (timeStep, render = true) => {
@@ -76,7 +77,6 @@ window.onresize = resize;
 
 resize();
 requestAnimationFrame(loopFunction);
-spawn(true);
 
-for (let i = 0; i < 2000; ++i)
+for (let i = 0; i < 1000; ++i)
     update(fps, false);

@@ -1,5 +1,5 @@
-const BugFactory = function(random) {
-    this.makeBug = (right, x, y) => {
+const BugFactory = function() {
+    this.makeBug = (random, right, x, y) => {
         let lastBug;
         let legs = true;
         const lengthRandomizer = random.getFloat();
@@ -25,9 +25,9 @@ const BugFactory = function(random) {
             const wingSize = Math.max(body.getThickness() * BugFactory.WING_SCALE * length, BugFactory.WING_SIZE_MIN);
 
             if (length <= BugFactory.WING_ROOT_THRESHOLD)
-                newBug.setWings(new Wings(wingSize));
+                newBug.setWings(new Wings(random, wingSize));
             else
-                segments[0].setWings(new Wings(wingSize));
+                segments[0].setWings(new Wings(random, wingSize));
         }
 
         return newBug;

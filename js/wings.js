@@ -1,4 +1,4 @@
-const Wings = function(radius) {
+const Wings = function(random, radius) {
     const noise = cubicNoiseConfig(random.getFloat());
     const radians = Wings.RADIANS_MIN + (Wings.RADIANS_MAX - Wings.RADIANS_MIN) * random.getFloat();
     const radii = [];
