@@ -187,8 +187,8 @@ const Bug = function(random, motionOffset, x, y, body, right, hasLegs, parent, f
     makeBody();
 };
 
-Bug.VISIBILITY_RADIUS = 500;
-Bug.SPAWN_RADIUS = 400;
+Bug.VISIBILITY_RADIUS = 250;
+Bug.SPAWN_RADIUS = 200;
 Bug.NOISE_SCALE_MIN = 0.003;
 Bug.NOISE_SCALE_MAX = 0.01;
 Bug.SPEED_SCALE_MIN = 0.1;
