@@ -51,7 +51,7 @@ const update = (timeStep, render = true) => {
     if (render)
         context.clearRect(0, 0, canvas.width, canvas.height);
 
-    if ((bugTimer -= timeStep * canvas.width * canvas.height / 1000000) < 0) {
+    if ((bugTimer -= timeStep * canvas.width * canvas.height / 750000) < 0) {
         bugTimer = BUG_TIME_MINIMUM + (BUG_TIME_MAXIMUM - BUG_TIME_MINIMUM) * random.getFloat();
 
         spawn(false);
@@ -78,5 +78,7 @@ window.onresize = resize;
 resize();
 requestAnimationFrame(loopFunction);
 
-for (let i = 0; i < 5000; ++i)
+for (let i = 0; i < 1500; ++i)
     update(fps, false);
+
+spawn(true);
