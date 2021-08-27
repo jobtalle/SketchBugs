@@ -1,0 +1,13 @@
+{
+  "name": "bugs",
+  "version": "1.0.0",
+  "author": "Job Talle",
+  "description": "A Koi breeding game",
+  "devDependencies": {
+    "clean-css-cli": "^4.3.0",
+    "google-closure-compiler": "^20210106.0.0"
+  },
+  "scripts": {
+    "compress": "python squish.py/squish.py index.html release.html --advanced-cc"
+  }
+}

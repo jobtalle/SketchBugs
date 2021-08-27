@@ -7,7 +7,7 @@ const wrapper = document.getElementById("wrapper");
 const canvas = document.getElementById("renderer");
 const context = canvas.getContext("2d");
 const bugs = [];
-const bugSeed = Math.floor(Math.random() * Random.MODULUS);
+const bugSeed = 8888;
 const random = new Random(Math.floor(Math.random() * Random.MODULUS));
 const factory = new BugFactory();
 let bugTimer = 0;
@@ -21,12 +21,12 @@ const makeSpawnLocation = right => {
     if (right)
         return {
             x: canvas.width + Bug.SPAWN_RADIUS,
-            y: (canvas.height + Bug.SPAWN_RADIUS) * random.getFloat() - Bug.SPAWN_RADIUS * .5
+            y: canvas.height * random.getFloat()
         };
     else
         return {
             x: -Bug.SPAWN_RADIUS,
-            y: (canvas.height + Bug.SPAWN_RADIUS) * random.getFloat() - Bug.SPAWN_RADIUS * .5
+            y: canvas.height * random.getFloat()
         };
 };
 
